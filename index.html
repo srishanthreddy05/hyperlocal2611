@@ -3,113 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stake - Claim Bonus</title>
+    <title>Stake - Bonus Claim</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #0f0f0f;
+            background-color: #0d0d0d;
             color: white;
-        }
-
-        .container {
-            background: #1a1a1a;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             text-align: center;
-            width: 350px;
+            padding: 50px;
         }
-
-        h1 {
-            margin-bottom: 20px;
-        }
-
-        .input-field {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .input-field label {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .input-field input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
-
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .container {
             background: #1a1a1a;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            text-align: center;
+            width: 300px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        input, select, button {
+            width: 90%;
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #00aaff;
             color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0088cc;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container" id="loginContainer">
-        <h1>Stake Login</h1>
-        <div class="input-field">
-            <label for="username">Username:</label>
-            <input type="text" id="username" placeholder="Enter your username">
-        </div>
-        <div class="input-field">
-            <label for="password">Password:</label>
-            <input type="password" id="password" placeholder="Enter your password">
-        </div>
-        <button class="btn" id="loginBtn">Login</button>
+        <h2>Stake Login</h2>
+        <input type="text" id="username" placeholder="Username" required><br>
+        <input type="password" id="password" placeholder="Password" required><br>
+        <button onclick="login()">Login</button>
     </div>
 
-    <div class="popup" id="bonusPopup">
+    <div class="container hidden" id="bonusContainer">
         <h2>Claim Your Bonus</h2>
-        <p>Congratulations! You've received a 20 USDT bonus.</p>
-        <button class="btn" id="claimBonus">Claim Now</button>
+        <select id="bonusType">
+            <option value="20 USDT">20 USDT</option>
+            <option value="0.00024 BTC">0.00024 BTC</option>
+            <option value="1710 INR">₹1710 INR</option>
+        </select><br>
+        <button onclick="claimBonus()">Claim</button>
     </div>
 
     <script>
-        document.getElementById("loginBtn").addEventListener("click", function() {
-            document.getElementById("loginContainer").style.display = "none";
-            document.getElementById("bonusPopup").style.display = "block";
-        });
-
-        document.getElementById("claimBonus").addEventListener("click", function() {
-            alert("Eripuka nik bonus ostad ankunava?");
-        });
+        function login() {
+            document.getElementById("loginContainer").classList.add("hidden");
+            document.getElementById("bonusContainer").classList.remove("hidden");
+        }
+        
+        function claimBonus() {
+            let bonus = document.getElementById("bonusType").value;
+            alert(`Eripuka nik ${bonus} bonus ostad ankunava? 😂`);
+        }
     </script>
 </body>
 </html>
