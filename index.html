@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Stake - Claim Bonus</title>
     <style>
-        /* CSS Styling */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -14,44 +13,35 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f3f4f6;
+            background-color: #0f0f0f;
+            color: white;
         }
 
         .container {
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 350px;
+            background: #1a1a1a;
             padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             text-align: center;
+            width: 350px;
         }
 
-        .container h1 {
+        h1 {
             margin-bottom: 20px;
-            color: #333;
         }
 
-        .step {
-            display: none;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        .input-field, .role-select {
+        .input-field {
             margin-bottom: 15px;
             text-align: left;
         }
 
-        .input-field label, .role-select label {
+        .input-field label {
             display: block;
             font-size: 14px;
-            color: #555;
             margin-bottom: 5px;
         }
 
-        .input-field input, .role-select select {
+        .input-field input {
             width: 100%;
             padding: 10px;
             font-size: 16px;
@@ -76,105 +66,49 @@
             background-color: #45a049;
         }
 
-        .error-message {
-            color: red;
-            font-size: 14px;
+        .popup {
             display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Namasthe Boss</h1>
-        
-        <!-- Step 1: Role Selection -->
-        <div class="step active" id="step1">
-            <div class="role-select">
-                <label for="role">Select Role:</label>
-                <select id="role" required>
-                    <option value="">-- Select Role --</option>
-                    <option value="admin">Admin</option>
-                    <option value="damalboy">Damal Boy</option>
-                </select>
-            </div>
-            <p class="error-message" id="errorRole">Please select a role!</p>
-            <button type="button" class="btn" id="nextStep">Next</button>
+    <div class="container" id="loginContainer">
+        <h1>Stake Login</h1>
+        <div class="input-field">
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Enter your username">
         </div>
-        
-        <!-- Step 2: Damal Boy Details -->
-        <div class="step" id="stepUser">
-            <div class="input-field">
-                <label for="name">Name:</label>
-                <input type="text" id="name" placeholder="peru em" required>
-            </div>
-            <div class="input-field">
-                <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" placeholder="ahh number chpu" required>
-            </div>
-            <p class="error-message" id="errorUser">Please fill in all fields!</p>
-            <button type="button" class="btn" id="submitUser">Submit</button>
+        <div class="input-field">
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password">
         </div>
-        
-        <!-- Step 3: Admin Password -->
-        <div class="step" id="stepAdmin">
-            <div class="input-field">
-                <label for="password">Password:</label>
-                <input type="password" id="password" placeholder="nik password tlsa ra puka " required>
-            </div>
-            <p class="error-message" id="errorAdmin">Incorrect password!</p>
-            <button type="button" class="btn" id="submitAdmin">Submit</button>
-        </div>
+        <button class="btn" id="loginBtn">Login</button>
+    </div>
+
+    <div class="popup" id="bonusPopup">
+        <h2>Claim Your Bonus</h2>
+        <p>Congratulations! You've received a 20 USDT bonus.</p>
+        <button class="btn" id="claimBonus">Claim Now</button>
     </div>
 
     <script>
-        // Multi-step form logic
-        const step1 = document.getElementById("step1");
-        const stepUser = document.getElementById("stepUser");
-        const stepAdmin = document.getElementById("stepAdmin");
-        const nextStep = document.getElementById("nextStep");
-        const submitUser = document.getElementById("submitUser");
-        const submitAdmin = document.getElementById("submitAdmin");
-        const errorRole = document.getElementById("errorRole");
-        const errorUser = document.getElementById("errorUser");
-        const errorAdmin = document.getElementById("errorAdmin");
-
-        nextStep.addEventListener("click", () => {
-            const role = document.getElementById("role").value;
-
-            if (role) {
-                errorRole.style.display = "none";
-                step1.classList.remove("active");
-                if (role === "damalboy") {
-                    stepUser.classList.add("active");
-                } else if (role === "admin") {
-                    stepAdmin.classList.add("active");
-                }
-            } else {
-                errorRole.style.display = "block";
-            }
+        document.getElementById("loginBtn").addEventListener("click", function() {
+            document.getElementById("loginContainer").style.display = "none";
+            document.getElementById("bonusPopup").style.display = "block";
         });
 
-        submitUser.addEventListener("click", () => {
-            const name = document.getElementById("name").value;
-            const phone = document.getElementById("phone").value;
-            if (name && phone) {
-                errorUser.style.display = "none";
-                alert("Damal Boy details submitted successfully!");
-                window.location.href = "damalboy.html"; // Redirect to Damal Boy page
-            } else {
-                errorUser.style.display = "block";
-            }
-        });
-
-        submitAdmin.addEventListener("click", () => {
-            const password = document.getElementById("password").value;
-            if (password === "damal@boy") {
-                errorAdmin.style.display = "none";
-                alert("Welcome, Admin!");
-                window.location.href = "admin.html"; // Redirect to admin page
-            } else {
-                errorAdmin.style.display = "block";
-            }
+        document.getElementById("claimBonus").addEventListener("click", function() {
+            alert("Eripuka nik bonus ostad ankunava?");
         });
     </script>
 </body>
