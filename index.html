@@ -1,73 +1,97 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stake - Bonus Claim</title>
+    <title>IPL Predictions 2025</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #0d0d0d;
-            color: white;
             text-align: center;
-            padding: 50px;
+            background-color: #333;
+            margin: 0;
+            padding: 0;
+            color: white;
         }
+
         .container {
-            background: #1a1a1a;
+            width: 100%;
+            max-width: 400px;
+            margin: 100px auto;
+            background: #444;
             padding: 20px;
             border-radius: 10px;
-            width: 300px;
-            margin: auto;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
         }
-        input, select, button {
+
+        h1 {
+            color: #66d9ef;
+        }
+
+        input {
             width: 90%;
-            margin: 10px 0;
             padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background: #444;
+            color: white;
+        }
+
+        button {
+            width: 95%;
+            padding: 10px;
+            background: #66d9ef;
+            color: #333;
             border: none;
             border-radius: 5px;
-        }
-        button {
-            background-color: #00aaff;
-            color: white;
             cursor: pointer;
         }
+
         button:hover {
-            background-color: #0088cc;
+            background: #4dd2ff;
         }
-        .hidden {
-            display: none;
+
+        .subscription {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
-</head>
-<body>
-    <div class="container" id="loginContainer">
-        <h2>Stake Login</h2>
-        <input type="text" id="username" placeholder="Username" required><br>
-        <input type="password" id="password" placeholder="Password" required><br>
-        <button onclick="login()">Login</button>
-    </div>
-
-    <div class="container hidden" id="bonusContainer">
-        <h2>Claim Your Bonus</h2>
-        <select id="bonusType">
-            <option value="20 USDT">20 USDT</option>
-            <option value="0.00024 BTC">0.00024 BTC</option>
-            <option value="1710 INR">₹1710 INR</option>
-        </select><br>
-        <button onclick="claimBonus()">Claim</button>
-    </div>
-
     <script>
-        function login() {
-            document.getElementById("loginContainer").classList.add("hidden");
-            document.getElementById("bonusContainer").classList.remove("hidden");
+        function submitForm(event) {
+            event.preventDefault();
+            document.querySelector('.container').innerHTML = `
+                <h1>IPL Predictions 2025</h1>
+                <h2>${new Date().toLocaleDateString()}</h2>
+                <p><strong>Toss Winner:</strong> Mumbai</p>
+                <p><strong>Match Winner:</strong> Mumbai</p>
+                <button class="subscription" onclick="makePayment()">Take Subscription</button>
+            `;
         }
-        
-        function claimBonus() {
-            let bonus = document.getElementById("bonusType").value;
-            alert(`Eripuka nik ${bonus} bonus ostad ankunava? 😂`);
+
+        function makePayment() {
+            alert("Make payment to 7013856518");
         }
     </script>
+</head>
+<body>
+    <div class="container">
+        <h1>BAIRAMALGUDA BABLU REDDY</h1>
+        <h2>IPL PREDICTIONS 2025</h2>
+        <form onsubmit="submitForm(event)">
+            <input type="text" placeholder="Enter your name" required>
+            <input type="text" placeholder="Enter 10-digit number" pattern="\d{10}" required>
+            <input type="text" placeholder="Referral Code (Optional)">
+            <button type="submit">Login</button>
+        </form>
+    </div>
 </body>
 </html>
