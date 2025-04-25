@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lost & Found - Pet Vet</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #3a86ff;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 36px;
+      text-align: center;
+    }
+
+    .btn-container {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .pet-button {
+      background-color: #ffffff;
+      color: #333;
+      border: none;
+      border-radius: 12px;
+      padding: 20px;
+      width: 220px;
+      height: 220px;
+      text-align: center;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .pet-button:hover {
+      transform: scale(1.05);
+      background-color: #f0f0f0;
+    }
+
+    .pet-button span {
+      font-size: 48px;
+    }
+
+    .form-container {
+      background-color: #ffffff;
+      color: #333;
+      padding: 40px;
+      border-radius: 10px;
+      width: 400px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      margin-top: 30px;
+    }
+
+    label {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input[type="text"], textarea, input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    textarea {
+      height: 80px;
+    }
+
+    .upload-box {
+      border: 2px dashed #ccc;
+      padding: 40px;
+      text-align: center;
+      font-size: 16px;
+      margin-top: 15px;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      color: #333;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .upload-box input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    button {
+      background-color: #3a86ff;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #1f63b6;
+    }
+
+    .pet-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+      width: 100%;
+      overflow-y: auto;
+      height: 60vh;
+      padding: 20px;
+    }
+
+    .pet-card {
+      background-color: #ffffff;
+      color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      width: 250px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pet-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .pet-card h3 {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+
+    .pet-card p {
+      font-size: 14px;
+    }
+
+    .contact-btn {
+      margin-top: 10px;
+      background-color: #3a86ff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .contact-btn:hover {
+      background-color: #1f63b6;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Lost & Found</h1>
+
+  <div class="btn-container">
+    <button class="pet-button" onclick="showForm('report-found')">
+      <span role="img" aria-label="Report Found Pet">📋</span>
+      <div>Report a Found Pet</div>
+    </button>
+
+    <button class="pet-button" onclick="showForm('report-lost')">
+      <span role="img" aria-label="Report Lost Pet">🔍</span>
+      <div>Report a Lost Pet</div>
+    </button>
+
+    <button class="pet-button" onclick="showForm('pet-list')">
+      <span role="img" aria-label="See List of Pets">📋</span>
+      <div>See List of Reported Pets</div>
+    </button>
+  </div>
+
+  <!-- Report Found Pet Form -->
+  <div id="report-found" class="form-container hidden">
+    <h1>Report a Found Pet</h1>
+    <form action="#" method="post" enctype="multipart/form-data">
+      <label for="petName">Pet's Name:</label>
+      <input type="text" id="petName" name="petName" required>
+
+      <label for="petType">Pet Type (Dog, Cat, etc.):</label>
+      <input type="text" id="petType" name="petType" required>
+
+      <label for="petDescription">Description:</label>
+      <textarea id="petDescription" name="petDescription" required></textarea>
+
+      <label for="reporterName">Your Name:</label>
+      <input type="text" id="reporterName" name="reporterName" required>
+
+      <label for="reporterContact">Your Contact:</label>
+      <input type="text" id="reporterContact" name="reporterContact" required>
+
+      <label>Upload Pet Photo:</label>
+      <div class="upload-box">
+        <input type="file" id="petImage" name="petImage" accept="image/*">
+        Drag & Drop or Click to Upload
+      </div>
+
+      <button type="submit">Submit Found Pet</button>
+    </form>
+  </div>
+
+  <!-- Report Lost Pet Form -->
+  <div id="report-lost" class="form-container hidden">
+    <h1>Report a Lost Pet</h1>
+    <form action="#" method="post" enctype="multipart/form-data">
+      <label for="petName">Pet's Name:</label>
+      <input type="text" id="petName" name="petName" required>
+
+      <label for="petType">Pet Type (Dog, Cat, etc.):</label>
+      <input type="text" id="petType" name="petType" required>
+
+      <label for="ownerName">Owner's Name:</label>
+      <input type="text" id="ownerName" name="ownerName" required>
+
+      <label for="ownerContact">Owner's Contact:</label>
+      <input type="text" id="ownerContact" name="ownerContact" required>
+
+      <label>Upload Pet Photo:</label>
+      <div class="upload-box">
+        <input type="file" id="lostPetImage" name="lostPetImage" accept="image/*">
+        Drag & Drop or Click to Upload
+      </div>
+
+      <button type="submit">Submit Lost Pet</button>
+    </form>
+  </div>
+
+  <!-- List of Reported Pets -->
+  <div id="pet-list" class="pet-list hidden">
+    <h1>Reported Pets</h1>
+    <div class="pet-card">
+      <img src="https://via.placeholder.com/250" alt="Pet 1">
+      <h3>Fluffy the Cat</h3>
+      <p>Location: New York</p>
+      <button class="contact-btn">Contact Reporter</button>
+    </div>
+    <div class="pet-card">
+      <img src="https://via.placeholder.com/250" alt="Pet 2">
+      <h3>Rex the Dog</h3>
+      <p>Location: Los Angeles</p>
+      <button class="contact-btn">Contact Reporter</button>
+    </div>
+    <!-- Add more pet cards as needed -->
+  </div>
+
+  <script>
+    function showForm(formId) {
+      // Hide all sections
+      document.getElementById('report-found').classList.add('hidden');
+      document.getElementById('report-lost').classList.add('hidden');
+      document.getElementById('pet-list').classList.add('hidden');
+
+      // Show the selected form
+      document.getElementById(formId).classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

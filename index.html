@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PranaPath</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #0a1f44; /* dark blue */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 30px;
+      font-weight: 700;
+      animation: fadeIn 1s ease-out;
+    }
+
+    select {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      margin-bottom: 30px;
+      background-color: white;
+      color: #0a1f44;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    select:hover {
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    nav a {
+      padding: 12px 30px;
+      background-color: white;
+      color: #0a1f44;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #ffcc00;
+      color: #0a1f44;
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🚑 PranaPath</h1>
+  <select id="roleSelect">
+    <option value="user">User</option>
+    <option value="driver">Driver</option>
+    <option value="traffic">Traffic Police</option>
+    <option value="fire">Fire-fighter</option>
+    <option value="police">Police</option>
+    <option value="vet">Veterinarian</option>
+  </select>
+  <nav>
+    <a href="#" id="enterBtn">Enter</a>
+  </nav>
+
+  <script>
+    document.getElementById('enterBtn').addEventListener('click', function (e) {
+      e.preventDefault(); // Prevent default link behavior
+      const role = document.getElementById('roleSelect').value;
+      
+      // Define role-based redirects
+      const pages = {
+        user: 'user.html',
+        driver: 'driver.html',
+        traffic: 'police1.html',
+        fire: 'firefighter.html',
+        police: 'police.html',
+        vet: 'veterinarian.html'
+      };
+
+      // Redirect to appropriate page
+      if (pages[role]) {
+        window.location.href = pages[role];
+      } else {
+        alert('Please select a valid role.');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Home - PranaPath</title>
+  
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a1f44, #102d5e);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .service-card {
+      background-color: white;
+      color: #0a1f44;
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s, background-color 0.3s;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .service-card:hover {
+      background-color: #ffcc00;
+      transform: translateY(-5px);
+      color: #0a1f44;
+    }
+
+    .service-image {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .complaint-btn {
+      margin-top: 10px;
+      padding: 10px 15px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 8px;
+      background: #e74c3c;
+      color: white;
+      cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBje44kEv3bsmIP_x5_LK2YkkKDq9hJFfU",
+      authDomain: "ambulancemanagementsystem0103.firebaseapp.com",
+      databaseURL: "https://ambulancemanagementsystem0103-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "ambulancemanagementsystem0103",
+      storageBucket: "ambulancemanagementsystem0103.appspot.com",
+      messagingSenderId: "492214508421",
+      appId: "1:492214508421:web:f2b626eff3ae7c8b73c2ec"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    function sendServiceRequest(serviceType) {
+      const userName = localStorage.getItem("userName");
+      const userNumber = localStorage.getItem("userNumber");
+
+      if (!userName || !userNumber) {
+        alert("User information not found. Please log in again.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          set(ref(db, 'requests/' + userNumber), {
+            name: userName,
+            number: userNumber,
+            serviceRequested: serviceType,
+            location: { latitude, longitude },
+            timestamp: new Date().toISOString()
+          }).then(() => {
+            alert(`✅ ${serviceType} request sent successfully!`);
+            window.location.href = 'waiting.html';
+          }).catch((error) => {
+            alert("❌ Error saving location: " + error.message);
+          });
+        }, (error) => {
+          alert("❌ Failed to get location.");
+        }, { enableHighAccuracy: true });
+      } else {
+        alert("❌ Geolocation is not supported by this browser.");
+      }
+    }
+
+    function raiseComplaint() {
+      const userName = localStorage.getItem("userName");
+      const userNumber = localStorage.getItem("userNumber");
+
+      if (!userName || !userNumber) {
+        alert("User info missing. Please log in again.");
+        return;
+      }
+
+      const complaint = prompt("📝 Enter your complaint:");
+      if (complaint && complaint.trim() !== "") {
+        const complaintRef = ref(db, 'complaints/' + userNumber);
+        set(complaintRef, {
+          name: userName,
+          number: userNumber,
+          complaint: complaint.trim(),
+          timestamp: new Date().toISOString()
+        }).then(() => {
+          alert("✅ Complaint raised successfully!");
+        }).catch((error) => {
+          alert("❌ Error raising complaint: " + error.message);
+        });
+      } else {
+        alert("⚠️ Complaint cannot be empty.");
+      }
+    }
+
+    window.sendServiceRequest = sendServiceRequest;
+    window.raiseComplaint = raiseComplaint;
+
+    window.onload = () => {
+      const userName = localStorage.getItem("userName");
+      if (userName) {
+        document.getElementById("greeting").innerText = `Welcome, ${userName} 🚑`;
+      }
+    };
+  </script>
+</head>
+
+<body>
+  <h1 id="greeting">Welcome to PranaPath 🚑</h1>
+  <div class="services-grid">
+    <a href="ambulance.html" onclick="sendServiceRequest('ambulance'); return false;" class="service-card">
+      <img src="ambulance.jpeg" alt="Ambulance" class="service-image" />
+      Ambulance Booking
+    </a>
+  
+    <!-- Blood Bank, now redirects to blood.html -->
+    <a href="blood.html" class="service-card">
+      <img src="bloodbank.webp" alt="Blood Bank" class="service-image" />
+      Blood Bank
+    </a>
+  
+    <a href="#" onclick="sendServiceRequest('fire')" class="service-card">
+      <img src="fire_engine.jpg" alt="Fire Truck" class="service-image" />
+      Fire Engine Booking
+    </a>
+  
+    <!-- Veterinary Services now redirects to animal.html -->
+    <a href="animal.html" class="service-card">
+      <img src="vet.jpg" alt="Veterinary" class="service-image" />
+      Veterinary Services
+    </a>
+  
+    <a href="#" onclick="sendServiceRequest('police')" class="service-card">
+      <img src="police.jpeg" alt="Police" class="service-image" />
+      Police Alert
+    </a>
+  
+    <!-- Complaint Section -->
+    <div class="service-card" onclick="raiseComplaint();">
+      <img src="complaint.jpeg" alt="Complaint" class="service-image" />
+      Raise a Complaint
+      <br />
+      <button class="complaint-btn">📝 Submit Complaint</button>
+    </div>
+  </div>
+</body>
+</html>

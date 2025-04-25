@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pet Vet Emergency</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #3a86ff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+      font-size: 36px;
+    }
+
+    .btn-container {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .pet-button {
+      background-color: #ffffff;
+      color: #333;
+      border: none;
+      border-radius: 12px;
+      padding: 20px;
+      width: 220px;
+      height: 220px;
+      text-align: center;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .pet-button:hover {
+      transform: scale(1.05);
+      background-color: #f0f0f0;
+    }
+
+    .pet-button span {
+      font-size: 48px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🐾 Pet Vet Emergency</h1>
+
+  <div class="btn-container">
+    <button class="pet-button" onclick="window.location.href='lost-and-found.html'">
+      <span role="img" aria-label="Lost & Found">🐕‍🦺</span>
+      <div>Lost & Found</div>
+    </button>
+
+    <button class="pet-button" onclick="window.location.href='doctor.html'">
+      <span role="img" aria-label="Doctor Assistance">🩺</span>
+      <div>Doctor Assistance</div>
+    </button>
+
+    <button class="pet-button" onclick="window.location.href='animalamb.html'">
+      <span role="img" aria-label="Book Animal Ambulance">🚑</span>
+      <div>Book Animal Ambulance</div>
+    </button>
+  </div>
+
+</body>
+</html>

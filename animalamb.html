@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Animal Ambulance</title>
+  <style>
+    body {
+      display: flex;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f4f8;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .map-container {
+      flex: 1;
+    }
+
+    .info-container {
+      width: 400px;
+      background-color: #3a86ff;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid yellow;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #waiting-message {
+      font-size: 18px;
+      text-align: center;
+    }
+
+    input, button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: yellow;
+      color: black;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="map-container">
+    <div id="map"></div>
+  </div>
+
+  <div class="info-container" id="loginSection">
+    <h2>Book Animal Ambulance</h2>
+    <input type="text" id="userName" placeholder="Your Name" />
+    <input type="text" id="userNumber" placeholder="Phone Number" />
+    <input type="text" id="userBloodGroup" placeholder="Blood Group" />
+    <button onclick="handleLogin(event)">Login & Request Ambulance</button>
+  </div>
+
+  <div class="info-container" id="bookingSection" style="display: none;">
+    <h2>Ambulance Requested</h2>
+    <div class="spinner"></div>
+    <div id="waiting-message">Waiting for nearest ambulance to accept request...</div>
+  </div>
+
+  <!-- Google Maps -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1ZnITeqwr7gt6pMeGfnlR-EBL1kYPbXA"></script>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBje44kEv3bsmIP_x5_LK2YkkKDq9hJFfU",
+      authDomain: "ambulancemanagementsystem0103.firebaseapp.com",
+      databaseURL: "https://ambulancemanagementsystem0103-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "ambulancemanagementsystem0103",
+      storageBucket: "ambulancemanagementsystem0103.appspot.com",
+      messagingSenderId: "492214508421",
+      appId: "1:492214508421:web:f2b626eff3ae7c8b73c2ec"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let userNumber = "";
+
+    window.handleLogin = function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById('userName').value.trim();
+      userNumber = document.getElementById('userNumber').value.trim();
+      const bloodGroup = document.getElementById('userBloodGroup').value.trim();
+
+      if (!name || !userNumber || !bloodGroup) {
+        alert("⚠ Please fill all fields!");
+        return;
+      }
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+
+          set(ref(db, 'users/' + userNumber), {
+            name,
+            number: userNumber,
+            bloodGroup,
+            location: { latitude: lat, longitude: lng },
+            serviceRequested: "animal-ambulance"
+          }).then(() => {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('bookingSection').style.display = 'flex';
+          }).catch((error) => {
+            alert("❌ Error saving request: " + error.message);
+          });
+
+          const map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat, lng },
+            zoom: 15
+          });
+
+          new google.maps.Marker({
+            position: { lat, lng },
+            map: map,
+            title: "You are here"
+          });
+
+        }, () => {
+          alert("❌ Location access denied.");
+        });
+      } else {
+        alert("❌ Geolocation not supported.");
+      }
+    };
+  </script>
+</body>
+</html>

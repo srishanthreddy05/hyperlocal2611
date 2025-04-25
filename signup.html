@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - PranaPath</title>
+  <style>
+    /* Dark Blue Gradient Background */
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #0a1f44, #0f3057);
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      color: white;
+    }
+
+    /* Glassmorphism Container */
+    .container {
+      background: rgba(10, 30, 60, 0.6);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      width: 320px;
+      animation: fadeIn 1s ease-in-out;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .container:hover {
+      transform: scale(1.02);
+    }
+
+    /* Heading */
+    h2 {
+      color: #ffffff;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    /* Select and Button */
+    select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 10px;
+      font-size: 1rem;
+      border: none;
+      outline: none;
+      transition: all 0.3s ease-in-out;
+    }
+
+    select {
+      background: #102d5e;
+      color: #ffffff;
+      border: 2px solid #1c4587;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+    }
+
+    select:hover {
+      border-color: #3a7bd5;
+    }
+
+    button {
+      background: #1c4587;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    button:hover {
+      background: #3a7bd5;
+      transform: scale(1.05);
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+  <script>
+    function redirectToPage() {
+      var role = document.getElementById("roleSelect").value;
+      var page = role + ".html";
+      window.location.href = page;
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>💙 Sign Up as</h2>
+    <form onsubmit="event.preventDefault(); redirectToPage();">
+      <select id="roleSelect">
+        <option value="user">User</option>
+        <option value="driver">Driver</option>
+        <option value="police">Traffic Police</option>
+        <option value="police">Fire-fighter</option>
+        <option value="police">Police</option>
+        <option value="police">Veterinarian</option>
+      </select>
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+</body>
+</html>

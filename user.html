@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page with Firebase</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background-color: #000;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: url('login_img.jpg') no-repeat center center fixed;
+      background-size: cover;
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .login-container h2 {
+      margin-bottom: 24px;
+      color: #222;
+      font-size: 28px;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="number"] {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: #f9f9f9;
+      color: #333;
+      transition: 0.3s;
+    }
+
+    .login-container input:hover {
+      border-color: #2980b9;
+      box-shadow: 0 0 8px rgba(41, 128, 185, 0.4);
+    }
+
+    .login-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .login-actions button {
+      flex: 1;
+      padding: 12px;
+      background-color: #102d5e;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .login-actions button:hover {
+      background-color: #1f6391;
+    }
+
+    .alt-login {
+      margin-top: 25px;
+    }
+
+    .alt-login button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      color: #333;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .alt-login button:hover {
+      background-color: #f0f0f0;
+    }
+
+    .alt-login img {
+      height: 22px;
+      width: 22px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="text" id="mobile" placeholder="Mobile Number" required />
+      <input type="number" id="age" placeholder="Age" required />
+    
+      <div class="login-actions">
+        <button type="submit">Login</button>
+        <button type="button" onclick="window.location.href='signup.html'">Sign Up</button>
+      </div>
+    </form>
+
+    <div class="alt-login">
+      <button onclick="alert('Continue with Google')">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google Logo">
+        Continue with Google
+      </button>
+      <button onclick="alert('Continue with Facebook')">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/facebook/facebook-original.svg" alt="Facebook Logo">
+        Continue with Facebook
+      </button>
+      <button onclick="alert('Continue with Apple ID')">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="Apple Logo">
+        Continue with Apple
+      </button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBje44kEv3bsmIP_x5_LK2YkkKDq9hJFfU",
+      authDomain: "ambulancemanagementsystem0103.firebaseapp.com",
+      databaseURL: "https://ambulancemanagementsystem0103-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "ambulancemanagementsystem0103",
+      storageBucket: "ambulancemanagementsystem0103.appspot.com",
+      messagingSenderId: "492214508421",
+      appId: "1:492214508421:web:f2b626eff3ae7c8b73c2ec"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const mobile = document.getElementById("mobile").value.trim();
+      const age = document.getElementById("age").value.trim();
+
+      if (!username || !mobile || !age) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const userId = mobile;
+
+      set(ref(db, 'users/' + userId), {
+        username,
+        mobile,
+        age
+      })
+      .then(() => {
+        // Store user info in localStorage
+        localStorage.setItem("userName", username);
+        localStorage.setItem("userNumber", mobile);
+        alert("Login successful!");
+        window.location.href = "home.html";
+      })
+      .catch((error) => {
+        console.error("Error writing to Firebase:", error);
+        alert("Something went wrong. Please try again.");
+      });
+    });
+  </script>
+</body>
+</html>
